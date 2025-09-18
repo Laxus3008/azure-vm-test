@@ -14,11 +14,14 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Copy index.html to VM
-        uses: appleboy/ssh-action@master
+        uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.AZURE_VM_HOST }}
           username: ${{ secrets.AZURE_VM_USERNAME }}
           key: ${{ secrets.AZURE_VM_SSH_KEY }}
-          script: |
-            # This path is correct because index.html is in the root
-            scp ${{ github.workspace }}/index.html ${{ secrets.AZURE_VM_USERNAME }}@${{ secrets.AZURE_VM_HOST }}:/var/www/dummy/
+          port: 22
+          source: "index.html"
+          target: "/var/www/dummy/"
+          # script: |
+          #   # This path is correct because index.html is in the root
+          #   scp ${{ github.workspace }}/index.html ${{ secrets.AZURE_VM_USERNAME }}@${{ secrets.AZURE_VM_HOST }}:/var/www/dummy/
